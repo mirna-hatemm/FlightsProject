@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Details</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #000000;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #ALL {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            color: #007bff;
+        }
+
+        .passenger-list {
+            margin-top: 20px;
+        }
+
+        .passenger-item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .passenger-item span {
+            flex: 1;
+            padding: 0 10px;
+        }
+
+        .DO {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .cancelandrefund {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .DO:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="ALL">
+        <h2>Flight Details</h2>
+
+        <p><strong>Flight ID:</strong> <span id="flight"></span></p>
+        <p><strong>Flight Name:</strong> <span id="flightName"></span></p>
+        <p><strong>Itinerary:</strong> <span id="itinerary"></span></p>
+
+        <h3>Pending Passengers List</h3>
+        <div class="passenger-list" id="pendingPassengers"></div>
+
+        <h3>Registered Passengers List</h3>
+        <div class="passenger-list" id="registeredPassengers"></div>
+
+        <button class="DO canelandrefund" onclick="cancelFlight()">Cancel Flight</button>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        
+        <script>
+        $.ajax({
+        url: 'php/flight_info.html',
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            console.log(data);
+            if (data.flights.id) {
+                document.getElementById('flight').textContent = data.flights.id;
+            }
+
+            if (data.flights.name) {
+                document.getElementById('flightName').textContent = data.flights.name;
+            }
+
+            if (data.flights.itinerary) {
+                document.getElementById('itinerary').textContent = data.flights.itinerary;
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching user data:', status, error);
+        }
+    }); 
+    </script>
+
+</body>
+</html>
+

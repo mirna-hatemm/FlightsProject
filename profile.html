@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #000000;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #ALL {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #007bff;
+        }
+
+        .flight-list {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .flight-item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .editb,
+        .saveb {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .save-btn {
+            background-color: #28a745;
+        }
+
+        .editb:hover,
+        .saveb:hover {
+            opacity: 0.8;
+        }
+
+        .editable {
+            border: 2px solid #007bff;
+            padding: 8px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="ALL">
+        <h2>User Profile</h2>
+        <form action="" method="post">
+            <img id="logo" alt="User Logo">
+            <p><strong>Name:</strong> <span id="name" class="editable"></span></p>
+            <p><strong>Bio:</strong> <span id="bio" class="editable"></span></p>
+            <p><strong>Address:</strong> <span id="address" class="editable"></span></p>
+        </form>
+
+        <h2>Flights</h2>
+        <span id="flights"></span>
+        
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.editable').on('blur', function() {
+                var updatedContent = $(this).text();
+                var fieldName = $(this).attr('id');
+                
+                $.ajax({
+                    url: 'php/updateProfile.php',
+                    method: 'POST',
+                    data: { field: fieldName, content: updatedContent },
+                    success: function(response) {
+                        console.log('Update successful');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error updating data:', status, error);
+                    }
+                });
+            });
+
+        $.ajax({
+        url: 'php/profile.php',
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            console.log(data);
+            if (data.name) {
+                document.getElementById('name').textContent = data.name;
+            }
+
+            if (data.bio) {
+                document.getElementById('bio').textContent = data.bio;
+            }
+
+            if (data.address) {
+                document.getElementById('address').textContent = data.address;
+            }
+
+            if (data.flights) {
+                    var flightsList = document.getElementById('flights');
+                    data.flights.forEach(function(flight) {
+                        var listItem = document.createElement('li');
+                        listItem.className = 'flight-item';
+                        listItem.textContent = 'Flight ID: ' + flight.id + ', Name: ' + flight.name;
+                        flightsList.appendChild(listItem);
+                    });
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching user data:', status, error);
+        }
+    });
+
+});
+        
+    </script>
+
+</body>
+</html>

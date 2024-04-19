@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Flight Info</title>
+    <style>
+        /* Basic styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .flight-info {
+            margin-bottom: 20px;
+        }
+
+        .flight-info p {
+            margin-bottom: 10px;
+        }
+
+        .options-container {
+            text-align: center;
+        }
+
+        .options-container button {
+            padding: 10px 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-bottom: 10px;
+        }
+
+        .options-container button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 20% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 60%;
+            border-radius: 8px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .message-input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: vertical;
+            font-size: 14px;
+        }
+
+        .message-input::placeholder {
+            color: rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1>Flight Info</h1>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="flight-info">
+            <h2>Flight Information</h2>
+            <p>Flight Number: FL123</p>
+            <p>Departure: New York</p>
+            <p>Arrival: Los Angeles</p>
+            <p>Price: $250</p>
+            <!-- Add more flight details as needed -->
+        </section>
+
+        <div class="options-container">
+            <button onclick="openPaymentWindow()">Take It (from account $)</button>
+            <button onclick="openMessageModal()">Message the Company</button>
+        </div>
+
+        <!-- Payment Modal -->
+        <div id="paymentModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2>Select Payment Option</h2>
+                <button>From Account $</button>
+                <button>Cash (dealing with company)</button>
+            </div>
+        </div>
+
+        <!-- Message Modal -->
+        <div id="messageModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2>Message the Company</h2>
+                <textarea class="message-input" placeholder="Type your message here"></textarea>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function openPaymentWindow() {
+            document.getElementById("paymentModal").style.display = "block";
+        }
+
+        function openMessageModal() {
+            document.getElementById("messageModal").style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("paymentModal").style.display = "none";
+            document.getElementById("messageModal").style.display = "none";
+        }
+    </script>
+</body>
+
+</html>

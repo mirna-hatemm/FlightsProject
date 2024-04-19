@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Details</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #000000;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #ALL {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            color: #007bff;
+        }
+
+        .passenger-list {
+            margin-top: 20px;
+        }
+
+        .passenger-item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .passenger-item span {
+            flex: 1;
+            padding: 0 10px;
+        }
+
+        .DO {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .cancelandrefund {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .DO:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="ALL">
+        <h2>Flights List</h2>
+        <ul id="flights" class="passenger-list"></ul>
+
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                // Function to handle flight item click
+                function handleFlightClick(flightId) {
+                    // Use AJAX to send flight ID to the server
+                    $.ajax({
+                        url: 'php/store_flight_id.php',
+                        method: 'POST',
+                        data: { flight_id: flightId },
+                        success: function(response) {
+                            // Optionally, handle success response
+                            console.log('Flight ID stored in session:', response);
+                            // Redirect to flight_info.html or perform other actions
+                            window.location.href = 'flight_info.html?flight_id=' + flightId;
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error storing flight ID:', status, error);
+                        }
+                    });
+                }
+            });
+
+                // AJAX to fetch flights
+                $.ajax({
+                    url: 'php/listAllflights.php',
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data && data.flights) {
+                            var flightsList = document.getElementById('flights');
+                            data.flights.forEach(function(flight) {
+                                var listItem = document.createElement('li');
+                                listItem.className = 'flight-item';
+
+                                var link = document.createElement('a');
+                                link.href = '#'; // Set a placeholder href
+                                link.textContent = 'Flight ID: ' + flight.id + ', Name: ' + flight.name;
+
+                                // Attach click event to the link
+                                link.addEventListener('click', function() {
+                                    handleFlightClick(flight.id);
+                                });
+
+                                listItem.appendChild(link);
+                                flightsList.appendChild(listItem);
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching flight data:', status, error);
+                    }
+                });
+        </script>
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script>
+            $.ajax({
+                url: 'php/listAllflights.php',
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    if (data && data.flights) {
+                        var flightsList = document.getElementById('flights');
+                        data.flights.forEach(function(flight) {
+                            var listItem = document.createElement('li');
+                            listItem.className = 'flight-item';
+
+                            var link = document.createElement('a');
+                            link.href = 'flight_info.html?flight_id=' + flight.id;
+                            link.textContent = 'Flight ID: ' + flight.id + ', Name: ' + flight.name;
+
+                            listItem.appendChild(link);
+                            flightsList.appendChild(listItem);
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching flight data:', status, error);
+                }
+            });
+        </script>
+    </div>
+        
+    </script>
+
+
+</body>
+</html>
